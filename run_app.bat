@@ -1,8 +1,9 @@
 @echo off
 chcp 65001 > nul
+setlocal enabledelayedexpansion
 
 echo.
-echo 🎙️ VoiceClone AI Spanish - Iniciando aplicación...
+echo 🎙️ VoiceClone AI Spanish - Iniciando...
 echo.
 
 :: Verificar si existe el entorno virtual
@@ -36,9 +37,7 @@ echo.
 echo 📊 Información del sistema:
 python -c "import torch; print('🔥 PyTorch:', torch.__version__)"
 python -c "import torch; print('🖥️  CUDA:', 'Disponible' if torch.cuda.is_available() else 'No disponible')" 2>nul
-if "%ERRORLEVEL%" equ "0" (
-    python -c "import torch; print('🎯 GPU:', torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'CPU')" 2>nul
-)
+python -c "import torch; print('🎯 GPU:', torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'CPU')" 2>nul
 
 echo.
 echo 🚀 Iniciando VoiceClone AI Spanish...
