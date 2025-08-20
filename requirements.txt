@@ -1,0 +1,47 @@
+# VoiceClone AI Spanish - Dependencias
+# Sistema de clonación de voz en español
+
+# Framework principal de síntesis de voz
+f5-tts>=0.0.3
+
+# Interfaz gráfica
+gradio>=4.0.0
+
+# Procesamiento de audio
+torchaudio>=2.0.0
+librosa>=0.10.0
+soundfile>=0.12.0
+
+# Machine Learning y IA
+torch>=2.0.0
+transformers>=4.30.0
+accelerate>=0.20.0
+
+# Procesamiento de datos
+numpy>=1.24.0
+scipy>=1.10.0
+pandas>=2.0.0
+
+# Utilidades
+pathlib2>=2.3.0
+tqdm>=4.65.0
+pyyaml>=6.0
+
+# HuggingFace y modelos
+huggingface-hub>=0.15.0
+datasets>=2.12.0
+
+# Procesamiento de texto (para español)
+jieba>=0.42.1
+
+# Audio codecs adicionales (opcional)
+pydub>=0.25.0
+
+# Para desarrollo (opcional)
+# jupyter>=1.0.0
+# matplotlib>=3.7.0
+# seaborn>=0.12.0
+
+# GPU Support (CUDA) - Se instala automáticamente con torch
+# Si tienes problemas con CUDA, usa:
+# pip install torch torchaudio --index-url https://download.pytorch.org/whl/cu118

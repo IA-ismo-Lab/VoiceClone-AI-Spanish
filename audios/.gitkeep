@@ -1,0 +1,28 @@
+# 📁 Carpeta de Audios
+
+Esta carpeta almacena los audios de referencia para crear perfiles de voz.
+
+## 🎵 Contenido
+
+Aquí van los archivos de audio que subes para crear perfiles:
+- `tu_voz_01.mp3`
+- `tu_voz_02.wav`
+- `etc...`
+
+## 📋 Formatos Soportados
+
+- **MP3** - Recomendado para archivos comprimidos
+- **WAV** - Mejor calidad, archivos más grandes
+- **M4A** - Compatible, buena compresión
+- **FLAC** - Máxima calidad, archivos grandes
+
+## 💡 Consejos
+
+- **Duración**: 10-60 segundos por archivo
+- **Calidad**: Sin ruido de fondo
+- **Contenido**: Habla natural y clara
+- **Cantidad**: 1-5 archivos por perfil
+
+---
+
+*Esta carpeta se crea automáticamente al usar la aplicación*

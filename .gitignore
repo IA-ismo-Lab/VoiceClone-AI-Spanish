@@ -1,0 +1,121 @@
+# Archivos y carpetas a ignorar en Git
+
+# Metadatos de IA (mantener en repo)
+# .ia-meta se incluye para detección automática por agentes
+
+# Entornos virtuales
+venv/
+env/
+.venv/
+.env/
+
+# Archivos de Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyTorch y modelos
+*.pth
+*.pt
+*.safetensors
+checkpoints/
+models/
+cache/
+
+# HuggingFace cache
+.cache/
+transformers_cache/
+huggingface_hub/
+
+# Archivos de audio (excepto ejemplos pequeños)
+*.wav
+*.mp3
+*.flac
+*.ogg
+*.m4a
+!examples/*.wav
+!examples/*.mp3
+
+# Outputs generados
+outputs/
+generated/
+temp/
+tmp/
+
+# Perfiles de usuario (contienen datos personales)
+profiles/
+user_profiles/
+voice_profiles/
+
+# Logs
+*.log
+logs/
+.logs/
+
+# Variables de entorno
+.env
+.env.local
+.env.*.local
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Sistema
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Configuraciones específicas del usuario
+config/user/
+settings/personal/
+
+# Archivos de backup
+*.bak
+*.backup
+*.old
+
+# Archivos temporales de Windows
+desktop.ini
+
+# Archivos de test grandes
+test_audio/
+large_files/
+
+# Cache de sistemas de build
+.pytest_cache/
+.coverage
+.nyc_output
+.cache
+
+# Documentación generada
+docs/_build/
+site/

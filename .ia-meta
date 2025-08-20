@@ -1,0 +1,63 @@
+{
+  "project": {
+    "name": "VoiceClone AI Spanish",
+    "version": "1.0.0",
+    "description": "Sistema avanzado de clonación de voz en español usando F5-TTS",
+    "type": "ai-voice-cloning",
+    "language": "spanish",
+    "framework": ["pytorch", "gradio", "f5-tts"]
+  },
+  "ai_metadata": {
+    "ai_friendly": true,
+    "agent_compatible": true,
+    "api_ready": true,
+    "automation_ready": true
+  },
+  "developers": {
+    "ai_assistants": [
+      "Claude Sonnet 3.5",
+      "GPT-4"
+    ],
+    "human_developers": [
+      "Alicia Colmenero Fernández"
+    ],
+    "organization": "IA-ismo Labs"
+  },
+  "endpoints": {
+    "main_interface": "http://localhost:7864",
+    "api_docs": "/docs",
+    "health_check": "/health"
+  },
+  "capabilities": [
+    "voice_cloning",
+    "text_to_speech",
+    "profile_management",
+    "audio_generation",
+    "spanish_synthesis"
+  ],
+  "requirements": {
+    "python": ">=3.9",
+    "gpu": "recommended",
+    "ram": "8GB minimum, 16GB recommended",
+    "storage": "5GB"
+  },
+  "license": "MIT",
+  "created": "2025-08-20",
+  "contact": {
+    "github": "https://github.com/alixiacf",
+    "organization": "https://github.com/IA-ismo-Lab",
+    "newsletter": "https://ia-ismo.com"
+  },
+  "tags": [
+    "voice-cloning",
+    "tts",
+    "spanish",
+    "f5-tts",
+    "gradio",
+    "pytorch",
+    "ai",
+    "artificial-intelligence",
+    "machine-learning",
+    "deep-learning"
+  ]
+}
