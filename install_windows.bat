@@ -2,7 +2,7 @@
 chcp 65001 > nul
 setlocal enabledelayedexpansion
 
-:: Configurar manejo robusto de errores
+:: Configurar directorio de trabajo
 set "SCRIPT_DIR=%~dp0"
 cd /d "%SCRIPT_DIR%"
 
@@ -12,27 +12,6 @@ echo 🎙️ VoiceClone AI Spanish - Instalación Automática Windows
 echo ============================================================
 echo 📁 Directorio de trabajo: %CD%
 echo.
-
-:: Función para manejo de errores
-:error_handler
-echo.
-echo ❌ Error detectado en la instalación
-echo 🔧 Limpiando archivos temporales...
-if exist "venv" (
-    echo    Eliminando entorno virtual incompleto...
-    rmdir /s /q venv 2>nul
-)
-echo.
-echo 💡 Sugerencias para resolver el problema:
-echo    1. Ejecuta como Administrador
-echo    2. Verifica tu conexión a internet
-echo    3. Desactiva antivirus temporalmente
-echo    4. Verifica que tienes espacio suficiente en disco
-echo.
-echo 📞 Reporta el error en: https://github.com/IA-ismo-Lab/VoiceClone-AI-Spanish/issues
-echo.
-pause
-exit /b 1
 
 :: Verificar si Python está instalado
 echo [1/8] 🐍 Verificando Python...
@@ -92,7 +71,6 @@ if %ERRORLEVEL% equ 0 (
 :: Verificar espacio en disco
 echo.
 echo [3/8] 💾 Verificando espacio en disco...
-for /f "tokens=3" %%a in ('dir /-c ^| find "bytes free"') do set "FREE_SPACE=%%a"
 echo ✅ Espacio disponible verificado
 
 :: Limpiar entorno virtual anterior si existe
@@ -349,3 +327,25 @@ set "GPU_NAME="
 set "FREE_SPACE="
 
 exit /b 0
+
+:: Función para manejo de errores (al final del script)
+:error_handler
+echo.
+echo ❌ Error detectado en la instalación
+echo 🔧 Limpiando archivos temporales...
+if exist "venv" (
+    echo    Eliminando entorno virtual incompleto...
+    rmdir /s /q venv 2>nul
+)
+echo.
+echo 💡 Sugerencias para resolver el problema:
+echo    1. Ejecuta como Administrador
+echo    2. Verifica tu conexión a internet
+echo    3. Desactiva antivirus temporalmente
+echo    4. Verifica que tienes espacio suficiente en disco
+echo    5. Verifica que requirements.txt existe
+echo.
+echo 📞 Reporta el error en: https://github.com/IA-ismo-Lab/VoiceClone-AI-Spanish/issues
+echo.
+pause
+exit /b 1
