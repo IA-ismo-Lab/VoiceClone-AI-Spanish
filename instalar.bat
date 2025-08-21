@@ -6,6 +6,14 @@ setlocal enabledelayedexpansion
 set "SCRIPT_DIR=%~dp0"
 cd /d "%SCRIPT_DIR%"
 
+:: Forzar cache y temporales en este directorio (evitar C: y falta de espacio)
+if not exist "pip-cache" mkdir "pip-cache" 2>nul
+if not exist "temp" mkdir "temp" 2>nul
+set "PIP_CACHE_DIR=%CD%\pip-cache"
+set "TMP=%CD%\temp"
+set "TEMP=%CD%\temp"
+set "PIP_NO_INPUT=1"
+
 echo.
 echo ============================================================
 echo 🎙️ VoiceClone AI Spanish - Instalación Ultra Robusta
@@ -128,18 +136,24 @@ if "!BUILD_TOOLS_OK!"=="0" (
     ) else (
         :: Instalar Spanish-F5
         echo 🏗️ Compilando e instalando Spanish-F5...
-        pushd temp_spanish_f5
-        python -m pip install . --quiet
-        popd
+    pushd temp_spanish_f5
+    python -m pip install .
+    set "_SPANISH_F5_INSTALL_ERROR=%ERRORLEVEL%"
+    popd
 
         :: Verificar que funciona
-        python -c "from spanish_f5 import load_model; print('SPANISH_F5_OK')" >nul 2>&1
-        if %ERRORLEVEL% equ 0 (
-            echo ✅ Spanish-F5 instalado y funcional
-            set /a SUCCESS_COUNT+=1
-        ) else (
-            echo ❌ Spanish-F5 instalado pero no funciona
+        if not "%_SPANISH_F5_INSTALL_ERROR%"=="0" (
+            echo ❌ Spanish-F5 no se pudo instalar (posible falta de espacio)
             set /a FAIL_COUNT+=1
+        ) else (
+            python -c "from spanish_f5 import load_model; print('SPANISH_F5_OK')" >nul 2>&1
+            if %ERRORLEVEL% equ 0 (
+                echo ✅ Spanish-F5 instalado y funcional
+                set /a SUCCESS_COUNT+=1
+            ) else (
+                echo ❌ Spanish-F5 instalado pero no funciona
+                set /a FAIL_COUNT+=1
+            )
         )
     )
 
@@ -166,7 +180,7 @@ python -m pip uninstall -y torch torchvision torchaudio --quiet 2>nul
 if "%PYTHON_MINOR%"=="11" (
     echo 🚀 Python 3.11 detectado - Instalando PyTorch CUDA optimizado...
     echo    📥 Descargando PyTorch CUDA 12.1 para Python 3.11...
-    python -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+    python -m pip install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
     
     :: Verificar instalación CUDA
     python -c "import torch; print('✅ PyTorch CUDA:', torch.version.cuda if torch.cuda.is_available() else 'No disponible')" 2>nul
@@ -185,7 +199,7 @@ if "%PYTHON_MINOR%"=="11" (
     )
 ) else (
     echo 🔄 Python %PYTHON_VERSION% - Probando PyTorch CUDA...
-    python -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+    python -m pip install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
     python -c "import torch; print('PYTORCH_OK')" >nul 2>&1
     if %ERRORLEVEL% equ 0 (
         python -c "import torch; exit(0 if torch.cuda.is_available() else 1)" 2>nul
@@ -204,7 +218,7 @@ goto :pytorch_done
 
 :fallback_cpu_pytorch
 echo    ⚠️ PyTorch CUDA falló, instalando versión CPU...
-python -m pip install torch torchvision torchaudio
+python -m pip install --no-cache-dir torch torchvision torchaudio
 python -c "import torch; print('PYTORCH_OK')" >nul 2>&1
 if %ERRORLEVEL% equ 0 (
     echo    ✅ PyTorch CPU instalado y funcional
@@ -218,7 +232,7 @@ if %ERRORLEVEL% equ 0 (
 
 :: Verificar herramientas de compilación
 echo.
-echo [6/8] 🔍 Verificando herramientas de compilación...
+echo [6/8] 🔍 Verificando herramientas de compilación (ninja/meson/MSVC)...
 set "BUILD_TOOLS_OK=1"
 
 where ninja >nul 2>&1
