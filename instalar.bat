@@ -57,21 +57,23 @@ if not "%PYTHON_MINOR%"=="11" (
     exit /b 1
 )
 
-if not "%PYTHON_VERSION%"=="3.11.8" (
-    echo ⚠️ ADVERTENCIA: Python 3.11.8 recomendado
+:: Solo advertir si NO es Python 3.11.x
+for /f "tokens=1,2 delims=." %%a in ("%PYTHON_VERSION%") do (
+    set "PYTHON_MAJOR_MINOR=%%a.%%b"
+)
+
+if not "%PYTHON_MAJOR_MINOR%"=="3.11" (
+    echo ❌ ERROR: Python 3.11 requerido para F5-TTS
     echo    Versión actual: %PYTHON_VERSION%
-    echo    Versión recomendada: 3.11.8
+    echo    Versión requerida: 3.11.x
     echo.
-    echo ❓ ¿Continuar con Python %PYTHON_VERSION%? (S/N)
-    set /p "CONTINUE_ANYWAY="
-    if /i not "%CONTINUE_ANYWAY%"=="S" (
-        echo 🔄 Instalación cancelada. Instala Python 3.11.8 y reintenta.
-        pause
-        exit /b 1
-    )
-    echo ✅ Continuando con Python %PYTHON_VERSION%
+    echo 📥 DESCARGAR Python 3.11.8:
+    echo    https://www.python.org/downloads/release/python-3118/
+    echo.
+    pause
+    exit /b 1
 ) else (
-    echo ✅ Python 3.11.8 detectado - PERFECTO para F5-TTS + PyTorch CUDA
+    echo ✅ Python %PYTHON_VERSION% detectado - COMPATIBLE con F5-TTS
 )
 
 :: Crear entorno virtual si no existe
