@@ -1,30 +1,7 @@
 # 🎙️ VoiceClone AI Spanish
 
 [![Python](https://img.shields.io/badge/Python-3.9%2B-blue.svg)](https://www.python.org/downloads/)
-[![PyTorc## 📁 Estructura del Proyecto
-
-```
-VoiceClone-AI-Spanish/
-├── 🚀 app.py                    # Aplicación principal
-├── 📋 requirements.txt          # Dependencias completas
-├── 📋 requirements_basic.txt    # Dependencias básicas (sin compilación)
-├── 📖 README.md                 # Este archivo
-├── 🛠️ install_windows.bat       # Instalador automático Windows
-├── 🔧 install_manual.bat        # Instalador manual (problemas compilación)
-├── ⚡ run_app.bat               # Ejecutor rápido Windows
-├── 🔍 check_system.bat         # Diagnóstico del sistema
-├── 🔧 src/
-│   ├── __init__.py
-│   └── voice_generator.py       # Motor de clonación
-├── 📁 audios/                   # Directorio para audios de entrada
-├── 📁 examples/                 # Audios de ejemplo
-├── 📁 outputs/                  # Audios generados
-├── 📁 profiles/                 # Perfiles de voz guardados
-├── 🎨 assets/                   # Recursos (imágenes, demos)
-├── 📄 LICENSE                   # Licencia MIT
-├── 🤖 .ia-meta                  # Metadatos para IA
-└── 🔒 .gitignore               # Archivos ignorados
-```hields.io/badge/PyTorch-2.0%2B-red.svg)](https://pytorch.org/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.0%2B-red.svg)](https://pytorch.org/)
 [![Gradio](https://img.shields.io/badge/Gradio-4.0%2B-orange.svg)](https://gradio.app/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Spanish-F5](https://img.shields.io/badge/Spanish--F5-TTS-green.svg)](https://github.com/jpgallegoar/Spanish-F5)
@@ -211,14 +188,19 @@ VoiceClone-AI-Spanish/
 ├── 🚀 app.py                    # Aplicación principal
 ├── 📋 requirements.txt          # Dependencias
 ├── 📖 README.md                 # Este archivo
-├── �️ install_windows.bat       # Instalador automático Windows
 ├── ⚡ run_app.bat               # Ejecutor rápido Windows
-├── �🔧 src/
+├── 🛠️ instalar.bat             # Instalador principal Windows
+├── 🔧 src/
+│   ├── __init__.py
 │   └── voice_generator.py       # Motor de clonación
+├── 📁 audios/                   # Directorio para audios de entrada
 ├── 📁 examples/                 # Audios de ejemplo
+├── 📁 outputs/                  # Audios generados
+├── 📁 profiles/                 # Perfiles de voz guardados
 ├── 🎨 assets/                   # Recursos (imágenes, demos)
 ├── 📄 LICENSE                   # Licencia MIT
-└── 🤖 .ia-meta                  # Metadatos para IA
+├── 🤖 .ia-meta                  # Metadatos para IA
+└── 🔒 .gitignore                # Archivos ignorados
 ```
 
 ## 🎯 Casos de Uso
