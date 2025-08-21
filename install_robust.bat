@@ -57,7 +57,7 @@ if not "%PYTHON_MINOR%"=="11" (
     exit /b 1
 )
 
-if not "%PYTHON_PATCH%"=="3.11.8" (
+if not "%PYTHON_VERSION%"=="3.11.8" (
     echo ⚠️ ADVERTENCIA: Python 3.11.8 recomendado
     echo    Versión actual: %PYTHON_VERSION%
     echo    Versión recomendada: 3.11.8
