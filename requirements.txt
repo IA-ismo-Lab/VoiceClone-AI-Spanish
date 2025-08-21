@@ -1,47 +1,36 @@
-# VoiceClone AI Spanish - Dependencias
-# Sistema de clonación de voz en español
+﻿# VoiceClone AI Spanish - Dependencias del Sistema
+# Instalación automática con instalar.bat
 
-# NOTA: Spanish-F5 se instala directamente desde GitHub en install_windows.bat
-# pip install git+https://github.com/jpgallegoar/Spanish-F5.git
-
-# Interfaz gráfica
+# Interfaz de usuario
 gradio>=4.0.0
+
+# Motor de síntesis de voz principal  
+f5-tts
 
 # Procesamiento de audio
 torchaudio>=2.0.0
 librosa>=0.10.0
 soundfile>=0.12.0
+pydub>=0.25.0
 
-# Machine Learning y IA
+# Machine Learning y Deep Learning
 torch>=2.0.0
 transformers>=4.30.0
 accelerate>=0.20.0
 
-# Procesamiento de datos
+# Procesamiento de datos científicos
 numpy>=1.24.0
 scipy>=1.10.0
 pandas>=2.0.0
 
-# Utilidades
-pathlib2>=2.3.0
-tqdm>=4.65.0
-pyyaml>=6.0
-
-# HuggingFace y modelos
+# HuggingFace ecosystem
 huggingface-hub>=0.15.0
 datasets>=2.12.0
 
-# Procesamiento de texto (para español)
-jieba>=0.42.1
+# Utilidades esenciales
+tqdm>=4.65.0
+pyyaml>=6.0
+pathlib2>=2.3.0
 
-# Audio codecs adicionales (opcional)
-pydub>=0.25.0
-
-# Para desarrollo (opcional)
-# jupyter>=1.0.0
-# matplotlib>=3.7.0
-# seaborn>=0.12.0
-
-# GPU Support (CUDA) - Se instala automáticamente con torch
-# Si tienes problemas con CUDA, usa:
-# pip install torch torchaudio --index-url https://download.pytorch.org/whl/cu118
+# Optimización para español (opcional)
+# Spanish-F5 se instala desde GitHub durante instalación

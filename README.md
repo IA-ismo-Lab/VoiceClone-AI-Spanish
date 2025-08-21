@@ -88,7 +88,7 @@ git clone https://github.com/IA-ismo-Lab/VoiceClone-AI-Spanish.git
 cd VoiceClone-AI-Spanish
 
 # 3. Instalación completa
-install_robust.bat
+instalar.bat
 
 # 4. Verificar funcionamiento
 check.bat
@@ -118,7 +118,7 @@ check.bat
 check.bat
 
 # Si F5-TTS falla, reinstalar
-install_robust.bat
+instalar.bat
 ```
 
 ### 📋 Instalación Manual
