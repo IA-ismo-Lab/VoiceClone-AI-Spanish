@@ -104,7 +104,19 @@ if %ERRORLEVEL% neq 0 (
     if %ERRORLEVEL% neq 0 (
         echo ❌ Error instalando PyTorch
         goto :error_cleanup
+    ) else (
+        echo ✅ PyTorch CPU instalado correctamente
     )
+) else (
+    echo ✅ PyTorch CUDA instalado correctamente
+)
+
+:: Verificar que PyTorch se instaló correctamente
+echo 🧪 Verificando instalación de PyTorch...
+python -c "import torch; print('✅ PyTorch', torch.__version__, 'funcionando')" 2>nul
+if %ERRORLEVEL% neq 0 (
+    echo ❌ PyTorch no funciona correctamente
+    goto :error_cleanup
 )
 
 :: Verificar herramientas de compilación antes de Spanish-F5
