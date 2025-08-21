@@ -115,7 +115,8 @@ echo.
 echo [4/8] 🧰 Instalando dependencias básicas...
 
 echo    🖥️ Interfaz gráfica...
-python -m pip install gradio>=4.0.0
+:: Evitar redirección de Windows (>) creando archivos como 4.0.0
+python -m pip install "gradio>=4.0.0"
 if %ERRORLEVEL% equ 0 (
     echo    ✅ Gradio instalado
     set /a SUCCESS_COUNT+=1
@@ -125,7 +126,8 @@ if %ERRORLEVEL% equ 0 (
 )
 
 echo    🤖 Machine Learning básico...
-python -m pip install transformers>=4.30.0 huggingface-hub>=0.15.0
+:: Citar especificaciones para evitar creación de archivos 0.15.0, etc.
+python -m pip install "transformers>=4.30.0" "huggingface-hub>=0.15.0"
 if %ERRORLEVEL% equ 0 (
     echo    ✅ Transformers instalado
     set /a SUCCESS_COUNT+=1

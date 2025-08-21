@@ -119,3 +119,7 @@ large_files/
 # Documentación generada
 docs/_build/
 site/
+
+# Archivos de versión errónea creados por redirección accidental en Windows
+4.0.0
+0.15.0
