@@ -1,8 +1,8 @@
 # VoiceClone AI Spanish - Dependencias
 # Sistema de clonación de voz en español
 
-# Framework principal de síntesis de voz
-f5-tts>=0.0.3
+# NOTA: Spanish-F5 se instala directamente desde GitHub en install_windows.bat
+# pip install git+https://github.com/jpgallegoar/Spanish-F5.git
 
 # Interfaz gráfica
 gradio>=4.0.0

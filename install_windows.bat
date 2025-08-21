@@ -182,23 +182,41 @@ python -m pip install librosa>=0.10.0 --quiet
 python -m pip install soundfile>=0.12.0 --quiet
 python -m pip install pydub>=0.25.0 --quiet
 
-:: Instalar F5-TTS (puede requerir compilación)
-echo    🎙️ Instalando F5-TTS (esto puede tardar varios minutos)...
-python -m pip install f5-tts>=0.0.3 --quiet
+:: Instalar Spanish-F5 (versión específica para español)
+echo    �🇸 Instalando Spanish-F5 TTS (modelo en español)...
+echo    💡 Usando repositorio jpgallegoar/Spanish-F5 en lugar de F5-TTS original
+python -m pip install git+https://github.com/jpgallegoar/Spanish-F5.git --quiet
 if %ERRORLEVEL% neq 0 (
-    echo ⚠️  Error instalando F5-TTS, intentando método alternativo...
-    python -m pip install f5-tts --no-build-isolation --quiet
+    echo ⚠️  Error instalando Spanish-F5, intentando método alternativo...
+    echo    🔄 Clonando repositorio para instalación local...
+    
+    :: Método alternativo: clone local
+    if exist "temp_spanish_f5" rmdir /s /q temp_spanish_f5
+    git clone https://github.com/jpgallegoar/Spanish-F5.git temp_spanish_f5
     if %ERRORLEVEL% neq 0 (
-        echo ❌ Error crítico: No se pudo instalar F5-TTS
-        echo    💡 Esto puede deberse a falta de herramientas de compilación
-        echo    💡 Intenta instalar Visual Studio Build Tools
+        echo ❌ Error clonando repositorio Spanish-F5
         goto error_handler
     )
+    
+    cd temp_spanish_f5
+    python -m pip install -e . --quiet
+    if %ERRORLEVEL% neq 0 (
+        echo ❌ Error instalando Spanish-F5 desde código local
+        cd ..
+        goto error_handler
+    )
+    cd ..
+    
+    :: Limpiar directorio temporal
+    rmdir /s /q temp_spanish_f5
+    echo ✅ Spanish-F5 instalado desde repositorio local
+) else (
+    echo ✅ Spanish-F5 instalado exitosamente
 )
 
-:: Instalar el resto usando requirements.txt (excluyendo los ya instalados)
+:: Instalar el resto usando requirements.txt (excluyendo f5-tts)
 echo    📦 Instalando dependencias restantes...
-python -m pip install -r requirements.txt --quiet --upgrade
+python -m pip install tqdm pyyaml datasets accelerate --quiet
 if %ERRORLEVEL% neq 0 (
     echo ⚠️  Algunas dependencias pueden haber fallado, verificando instalación...
 )
@@ -223,6 +241,17 @@ python -c "import gradio; print('✅ Gradio:', gradio.__version__)" 2>nul
 if %ERRORLEVEL% neq 0 (
     echo ❌ Error: Gradio no se instaló correctamente
     goto error_handler
+)
+
+echo    🇪🇸 Verificando Spanish-F5...
+python -c "import f5_tts; print('✅ Spanish-F5 disponible')" 2>nul
+if %ERRORLEVEL% neq 0 (
+    echo ⚠️  Spanish-F5 no detectado, intentando verificación alternativa...
+    python -c "from f5_tts.api import F5TTS; print('✅ Spanish-F5 API disponible')" 2>nul
+    if %ERRORLEVEL% neq 0 (
+        echo ❌ Error: Spanish-F5 no se instaló correctamente
+        goto error_handler
+    )
 )
 
 python -c "import transformers; print('✅ Transformers disponible')" 2>nul

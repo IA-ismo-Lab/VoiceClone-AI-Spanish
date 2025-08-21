@@ -35,23 +35,33 @@ python -m pip install soundfile==0.12.1
 python -m pip install pydub==0.25.1
 
 echo.
-echo 🎙️ Intentando instalar F5-TTS con diferentes métodos...
-echo    Método 1: Instalación estándar
-python -m pip install f5-tts --no-cache-dir
+echo �🇸 Intentando instalar Spanish-F5 TTS con diferentes métodos...
+echo    💡 Usando repositorio jpgallegoar/Spanish-F5 (optimizado para español)
+echo    Método 1: Instalación directa desde GitHub
+python -m pip install git+https://github.com/jpgallegoar/Spanish-F5.git --no-cache-dir
 if %ERRORLEVEL% neq 0 (
-    echo    Método 2: Sin aislamiento de build
-    python -m pip install f5-tts --no-build-isolation --no-cache-dir
+    echo    Método 2: Clone local e instalación editable
+    if exist "temp_spanish_f5" rmdir /s /q temp_spanish_f5
+    git clone https://github.com/jpgallegoar/Spanish-F5.git temp_spanish_f5
     if %ERRORLEVEL% neq 0 (
-        echo    Método 3: Desde GitHub (desarrollo)
-        python -m pip install git+https://github.com/SWivid/F5-TTS.git --no-cache-dir
+        echo ❌ Error clonando Spanish-F5
+    ) else (
+        cd temp_spanish_f5
+        python -m pip install -e . --no-cache-dir
         if %ERRORLEVEL% neq 0 (
-            echo ❌ No se pudo instalar F5-TTS
-            echo 💡 Puede que necesites Visual Studio Build Tools
-            echo    Descarga desde: https://visualstudio.microsoft.com/visual-cpp-build-tools/
-            echo.
-            echo ⚠️ Continuando sin F5-TTS (la aplicación puede no funcionar)
-            pause
+            echo    Método 3: Instalación sin aislamiento de build
+            python -m pip install -e . --no-build-isolation --no-cache-dir
         )
+        cd ..
+        rmdir /s /q temp_spanish_f5
+    )
+    if %ERRORLEVEL% neq 0 (
+        echo ❌ No se pudo instalar Spanish-F5
+        echo 💡 Puede que necesites Visual Studio Build Tools
+        echo    Descarga desde: https://visualstudio.microsoft.com/visual-cpp-build-tools/
+        echo.
+        echo ⚠️ Continuando sin Spanish-F5 (la aplicación puede no funcionar)
+        pause
     )
 )
 
@@ -62,12 +72,12 @@ python -c "import torch; print('✅ PyTorch:', torch.__version__)"
 python -c "import transformers; print('✅ Transformers:', transformers.__version__)"
 
 echo.
-echo 🎯 Verificando F5-TTS...
-python -c "import f5_tts; print('✅ F5-TTS instalado correctamente')" 2>nul
+echo 🎯 Verificando Spanish-F5...
+python -c "import f5_tts; print('✅ Spanish-F5 instalado correctamente')" 2>nul
 if %ERRORLEVEL% neq 0 (
-    echo ⚠️ F5-TTS no disponible - revisa los errores arriba
+    echo ⚠️ Spanish-F5 no disponible - revisa los errores arriba
 ) else (
-    echo ✅ F5-TTS funcionando
+    echo ✅ Spanish-F5 funcionando
 )
 
 echo.

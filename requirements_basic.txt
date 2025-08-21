@@ -1,6 +1,9 @@
 # VoiceClone AI Spanish - Dependencias Básicas (Sin compilación)
 # Para sistemas que tienen problemas con herramientas de build
 
+# IMPORTANTE: Spanish-F5 se debe instalar manualmente:
+# pip install git+https://github.com/jpgallegoar/Spanish-F5.git
+
 # Interfaz gráfica
 gradio>=4.0.0
 
@@ -26,7 +29,5 @@ pydub>=0.25.0
 # HuggingFace
 datasets>=2.12.0
 
-# Nota: librosa y f5-tts se instalan manualmente si hay problemas de compilación
-# Para instalar manualmente:
+# Nota: librosa requiere compilación, se puede instalar manualmente si es necesario:
 # pip install librosa --no-deps
-# pip install f5-tts --no-build-isolation

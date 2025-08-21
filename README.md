@@ -199,8 +199,8 @@ VoiceClone-AI-Spanish/
 ## ⚙️ Tecnología
 
 ### 🧠 Modelo Base
-- **F5-TTS**: Framework de síntesis de voz de última generación
-- **jpgallegoar/F5-Spanish**: Modelo optimizado para español
+- **Spanish-F5**: Framework de síntesis de voz optimizado para español
+- **jpgallegoar/F5-Spanish**: Modelo pre-entrenado específico para español
 - **PyTorch**: Aceleración con GPU CUDA
 
 ### 🏗️ Arquitectura
@@ -243,8 +243,9 @@ VoiceClone-AI-Spanish/
 ## 🏷️ Créditos
 
 ### 🎓 Modelos y Tecnología
-- **F5-TTS**: [SWivid/F5-TTS](https://github.com/SWivid/F5-TTS)
-- **Modelo Español**: [jpgallegoar/F5-Spanish](https://huggingface.co/jpgallegoar/F5-Spanish)
+- **Spanish-F5**: [jpgallegoar/Spanish-F5](https://github.com/jpgallegoar/Spanish-F5) - Modelo optimizado para español
+- **F5-TTS Base**: [SWivid/F5-TTS](https://github.com/SWivid/F5-TTS) - Framework original
+- **Modelo HuggingFace**: [jpgallegoar/F5-Spanish](https://huggingface.co/jpgallegoar/F5-Spanish)
 - **Gradio**: [gradio-app/gradio](https://github.com/gradio-app/gradio)
 
 ### 👨‍💻 Desarrollo
