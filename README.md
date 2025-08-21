@@ -1,7 +1,23 @@
 # 🎙️ VoiceClone AI Spanish
 
 [![Python](https://img.shields.io/badge/Python-3.9%2B-blue.svg)](https://www.python.org/downloads/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-Compatible-green.svg)](https://fastapi.tiangolo.com/)
+[![F```
+VoiceClone-AI-Spanish/
+├── 🚀 app.py                    # Aplicación principal
+├── 📋 requirements.txt          # Dependencias completas
+├── 📋 requirements_basic.txt    # Dependencias básicas (sin compilación)
+├── 📖 README.md                 # Este archivo
+├── 🛠️ install_windows.bat       # Instalador automático Windows
+├── 🔧 install_manual.bat        # Instalador manual (problemas compilación)
+├── ⚡ run_app.bat               # Ejecutor rápido Windows
+├── 🔍 check_system.bat         # Diagnóstico del sistema
+├── 🔧 src/
+│   └── voice_generator.py       # Motor de clonación
+├── 📁 examples/                 # Audios de ejemplo
+├── 🎨 assets/                   # Recursos (imágenes, demos)
+├── 📄 LICENSE                   # Licencia MIT
+└── 🤖 .ia-meta                  # Metadatos para IA
+```//img.shields.io/badge/FastAPI-Compatible-green.svg)](https://fastapi.tiangolo.com/)
 [![Gradio](https://img.shields.io/badge/Gradio-4.0%2B-orange.svg)](https://gradio.app/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![AI-Friendly](https://img.shields.io/badge/AI-Friendly-purple.svg)](https://github.com/topics/artificial-intelligence)
@@ -252,6 +268,34 @@ export PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:512
 
 # O usar CPU
 export CUDA_VISIBLE_DEVICES=""
+```
+</details>
+
+<details>
+<summary><strong>Error de compilación (ninja/meson)</strong></summary>
+
+Si ves errores como "Could not find ninja" o "meson-python error":
+
+**Solución 1 - Instalar Build Tools:**
+```bash
+# Descargar e instalar Visual Studio Build Tools
+# https://visualstudio.microsoft.com/visual-cpp-build-tools/
+# Seleccionar "C++ build tools" durante instalación
+# Reiniciar sistema después de instalar
+```
+
+**Solución 2 - Script Manual:**
+```bash
+# Usar instalador alternativo
+install_manual.bat
+```
+
+**Solución 3 - Instalación paso a paso:**
+```bash
+# En el entorno virtual activado
+pip install ninja meson cmake
+pip install --upgrade setuptools wheel
+pip install f5-tts --no-build-isolation
 ```
 </details>
 

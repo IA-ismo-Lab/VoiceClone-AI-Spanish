@@ -1,0 +1,32 @@
+# VoiceClone AI Spanish - Dependencias Básicas (Sin compilación)
+# Para sistemas que tienen problemas con herramientas de build
+
+# Interfaz gráfica
+gradio>=4.0.0
+
+# Machine Learning base (ya instalado con PyTorch)
+torch>=2.0.0
+transformers>=4.30.0
+accelerate>=0.20.0
+huggingface-hub>=0.15.0
+
+# Procesamiento de datos básico
+numpy>=1.24.0
+scipy>=1.10.0
+pandas>=2.0.0
+
+# Utilidades
+tqdm>=4.65.0
+pyyaml>=6.0
+
+# Audio básico (sin compilación compleja)
+soundfile>=0.12.0
+pydub>=0.25.0
+
+# HuggingFace
+datasets>=2.12.0
+
+# Nota: librosa y f5-tts se instalan manualmente si hay problemas de compilación
+# Para instalar manualmente:
+# pip install librosa --no-deps
+# pip install f5-tts --no-build-isolation

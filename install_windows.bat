@@ -155,16 +155,52 @@ if %ERRORLEVEL% neq 0 (
 echo ✅ PyTorch instalado exitosamente
 
 :: Instalar el resto de dependencias
+echo    📦 Instalando herramientas de compilación...
+echo    💡 Instalando ninja y meson para compilación de paquetes...
+python -m pip install ninja meson wheel setuptools --quiet
+if %ERRORLEVEL% neq 0 (
+    echo ⚠️  Advertencia: Error instalando herramientas de compilación
+    echo    💡 Continuando con instalación (algunos paquetes pueden fallar)
+)
+
 echo    📦 Instalando dependencias del proyecto...
 if not exist "requirements.txt" (
     echo ❌ Error: requirements.txt no encontrado
     goto error_handler
 )
 
-python -m pip install -r requirements.txt --quiet
+echo    💡 Instalando paquetes uno por uno para mejor control de errores...
+:: Instalar dependencias críticas primero
+python -m pip install numpy scipy --quiet
+python -m pip install gradio>=4.0.0 --quiet
+python -m pip install transformers>=4.30.0 --quiet
+python -m pip install huggingface-hub>=0.15.0 --quiet
+
+:: Instalar audio processing
+echo    🎵 Instalando paquetes de procesamiento de audio...
+python -m pip install librosa>=0.10.0 --quiet
+python -m pip install soundfile>=0.12.0 --quiet
+python -m pip install pydub>=0.25.0 --quiet
+
+:: Instalar F5-TTS (puede requerir compilación)
+echo    🎙️ Instalando F5-TTS (esto puede tardar varios minutos)...
+python -m pip install f5-tts>=0.0.3 --quiet
 if %ERRORLEVEL% neq 0 (
-    echo ❌ Error instalando dependencias del requirements.txt
-    goto error_handler
+    echo ⚠️  Error instalando F5-TTS, intentando método alternativo...
+    python -m pip install f5-tts --no-build-isolation --quiet
+    if %ERRORLEVEL% neq 0 (
+        echo ❌ Error crítico: No se pudo instalar F5-TTS
+        echo    💡 Esto puede deberse a falta de herramientas de compilación
+        echo    💡 Intenta instalar Visual Studio Build Tools
+        goto error_handler
+    )
+)
+
+:: Instalar el resto usando requirements.txt (excluyendo los ya instalados)
+echo    📦 Instalando dependencias restantes...
+python -m pip install -r requirements.txt --quiet --upgrade
+if %ERRORLEVEL% neq 0 (
+    echo ⚠️  Algunas dependencias pueden haber fallado, verificando instalación...
 )
 echo ✅ Todas las dependencias instaladas
 :: Verificar instalación completa
@@ -345,7 +381,20 @@ echo    3. Desactiva antivirus temporalmente
 echo    4. Verifica que tienes espacio suficiente en disco
 echo    5. Verifica que requirements.txt existe
 echo.
-echo 📞 Reporta el error en: https://github.com/IA-ismo-Lab/VoiceClone-AI-Spanish/issues
+echo �️  Si el error menciona 'ninja', 'meson', o 'build tools':
+echo    1. Instala Visual Studio Build Tools:
+echo       https://visualstudio.microsoft.com/visual-cpp-build-tools/
+echo    2. O instala Visual Studio Community (workload C++)
+echo    3. Reinicia el sistema después de la instalación
+echo    4. Vuelve a ejecutar install_windows.bat
+echo.
+echo 🐍 Si el error menciona paquetes específicos de Python:
+echo    1. Ejecuta: pip install --upgrade pip setuptools wheel
+echo    2. Ejecuta: pip install ninja meson
+echo    3. Vuelve a intentar la instalación
+echo.
+echo �📞 Reporta el error completo en:
+echo    https://github.com/IA-ismo-Lab/VoiceClone-AI-Spanish/issues
 echo.
 pause
 exit /b 1
