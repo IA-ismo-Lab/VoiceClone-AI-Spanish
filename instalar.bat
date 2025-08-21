@@ -248,6 +248,30 @@ if not errorlevel 1 (
     echo ✅ MSVC encontrado
 )
 
+:: Intentar instalar herramientas mínimas vía pip dentro del venv si faltan
+if "!BUILD_TOOLS_OK!"=="0" (
+    echo.
+    echo 🔄 Intentando instalar herramientas de compilación mínimas en el entorno virtual...
+    echo    (ninja, meson, cmake, meson-python)
+    python -m pip install --upgrade pip setuptools wheel
+    python -m pip install ninja meson cmake meson-python
+
+    :: Revalidar disponibilidad tras instalación
+    set "BUILD_TOOLS_OK=1"
+    where ninja >nul 2>&1
+    if errorlevel 1 set "BUILD_TOOLS_OK=0"
+    where meson >nul 2>&1
+    if errorlevel 1 set "BUILD_TOOLS_OK=0"
+    where cl >nul 2>&1
+    if errorlevel 1 set "BUILD_TOOLS_OK=0"
+
+    if "!BUILD_TOOLS_OK!"=="1" (
+        echo ✅ Herramientas mínimas instaladas correctamente
+    ) else (
+        echo ⚠️ Algunas herramientas siguen faltando (MSVC no se instala con pip)
+    )
+)
+
 :: Intentar instalar Spanish-F5
 echo.
 echo [7/8] 🇪🇸 Instalando Spanish-F5...
