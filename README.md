@@ -49,6 +49,26 @@ Crea voces artificiales realistas en español con solo unos archivos de audio de
 - **🔄 Generación masiva** sin recargar modelo
 - **🎨 Fácil de usar** - No requiere conocimientos técnicos
 
+## 🔧 Requisitos del Sistema
+
+### 🐍 Python Recomendado
+- **Python 3.11** (ALTAMENTE RECOMENDADO para máxima compatibilidad)
+- Python 3.10-3.12 (compatible pero con limitaciones potenciales)
+
+### 🎮 Hardware para GPU (Opcional pero Recomendado)
+- **NVIDIA GPU** con soporte CUDA
+- **CUDA Toolkit 12.1** 
+- **Drivers NVIDIA actualizados**
+- **Mínimo 4GB VRAM** (8GB+ recomendado)
+
+### 🛠️ Herramientas de Compilación (Windows)
+- **Visual Studio Build Tools** con C++ tools
+- **Git** para clonación de repositorios
+
+### 💻 Sistema Operativo
+- **Windows 10/11** (script optimizado)
+- Linux/macOS (instalación manual)
+
 ## 🚀 Demo Rápido
 
 ![VoiceClone AI Demo](assets/demo.gif)
@@ -57,27 +77,50 @@ Crea voces artificiales realistas en español con solo unos archivos de audio de
 
 ## 📦 Instalación
 
-### Prerrequisitos
+### 🎯 Instalación Óptima (Python 3.11)
 
-- **Python 3.9+** 
-- **GPU NVIDIA** con CUDA (recomendado) o CPU
-- **8GB+ RAM** (16GB recomendado para GPU)
+**Para máxima compatibilidad y rendimiento GPU:**
 
-### 🚀 Instalación Automática (Windows)
+```bash
+# 1. Instalar Python 3.11 desde python.org
+# 2. Clonar el repositorio
+git clone https://github.com/IA-ismo-Lab/VoiceClone-AI-Spanish.git
+cd VoiceClone-AI-Spanish
 
-**¡La forma más fácil! Script que configura todo automáticamente:**
+# 3. Instalación específica Python 3.11
+install_python311_only.bat
+```
+
+### 🚀 Instalación Robusta (Cualquier Python)
+
+**Para Python 3.10-3.12 con detección inteligente:**
 
 ```bash
 # 1. Clonar el repositorio
 git clone https://github.com/IA-ismo-Lab/VoiceClone-AI-Spanish.git
 cd VoiceClone-AI-Spanish
 
-# 2. Ejecutar instalador automático
-install_windows.bat
-
-# 3. Iniciar aplicación
-run_app.bat
+# 2. Instalador inteligente
+install_robust.bat
 ```
+
+### 🛡️ Instalación Básica (Sin GPU)
+
+**Solo dependencias básicas, sin compilación:**
+
+```bash
+# Para sistemas sin herramientas de compilación
+install_basic_only.bat
+```
+
+### 📋 Scripts Disponibles
+
+| Script | Descripción | Recomendado para |
+|--------|-------------|------------------|
+| `install_python311_only.bat` | Requiere Python 3.11 específicamente | **Usuarios con GPU NVIDIA** |
+| `install_robust.bat` | Instalación inteligente multi-versión | **Uso general** |
+| `install_basic_only.bat` | Solo dependencias básicas | **Sistemas limitados** |
+| `diagnostico.bat` | Verificar estado del sistema | **Troubleshooting** |
 
 ### 📋 Instalación Manual
 

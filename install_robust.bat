@@ -13,21 +13,54 @@ echo ============================================================
 echo 📁 Directorio de trabajo: %CD%
 echo.
 
-:: Verificar si Python está instalado
-echo [1/8] 🐍 Verificando Python...
+:: Verificar si Python está instalado y es versión 3.11
+echo [1/8] 🐍 Verificando Python 3.11...
 python --version >nul 2>&1
 if %ERRORLEVEL% neq 0 (
     echo ❌ Error: Python no está instalado o no está en PATH
     echo.
-    echo 💡 Descargar Python desde: https://www.python.org/downloads/
+    echo 💡 Descargar Python 3.11 desde: https://www.python.org/downloads/release/python-3118/
     echo    ✅ Asegúrate de marcar "Add Python to PATH"
+    echo    🔥 IMPORTANTE: Usar Python 3.11 para compatibilidad con PyTorch CUDA
     pause
     exit /b 1
 )
 
-:: Mostrar versión de Python
+:: Verificar versión específica de Python
 for /f "tokens=2" %%v in ('python --version 2^>^&1') do set "PYTHON_VERSION=%%v"
-echo ✅ Python %PYTHON_VERSION% detectado
+echo 🔍 Python %PYTHON_VERSION% detectado
+
+:: Extraer versión mayor y menor
+for /f "tokens=1 delims=." %%a in ("%PYTHON_VERSION%") do set "PYTHON_MAJOR=%%a"
+for /f "tokens=2 delims=." %%b in ("%PYTHON_VERSION%") do set "PYTHON_MINOR=%%b"
+
+if not "%PYTHON_MAJOR%"=="3" (
+    echo ❌ Error: Se requiere Python 3.x
+    echo 💡 Instala Python 3.11 para máxima compatibilidad con PyTorch CUDA
+    pause
+    exit /b 1
+)
+
+if not "%PYTHON_MINOR%"=="11" (
+    echo ⚠️ ADVERTENCIA: Python 3.11 recomendado para PyTorch CUDA
+    echo    Versión actual: %PYTHON_VERSION%
+    echo    Versión recomendada: 3.11.x
+    echo.
+    echo 🔥 Para máxima compatibilidad con GPU/CUDA:
+    echo    1. Instala Python 3.11 desde python.org
+    echo    2. Asegúrate de que python.exe apunte a Python 3.11
+    echo.
+    echo ❓ ¿Continuar con Python %PYTHON_VERSION%? (S/N)
+    set /p "CONTINUE_ANYWAY="
+    if /i not "%CONTINUE_ANYWAY%"=="S" (
+        echo 🔄 Instalación cancelada. Instala Python 3.11 y reintenta.
+        pause
+        exit /b 1
+    )
+    echo ✅ Continuando con Python %PYTHON_VERSION% (puede haber limitaciones)
+) else (
+    echo ✅ Python 3.11 detectado - PERFECTO para PyTorch CUDA
+)
 
 :: Crear entorno virtual si no existe
 echo.
@@ -107,27 +140,67 @@ if %ERRORLEVEL% equ 0 (
     set /a FAIL_COUNT+=1
 )
 
-:: Intentar instalar PyTorch (versión más robusta)
+:: Intentar instalar PyTorch (versión más robusta y específica)
 echo.
-echo [5/8] 🔥 Instalando PyTorch...
-echo    🧪 Probando PyTorch CUDA...
-python -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121 --quiet
-python -c "import torch; print('PYTORCH_OK')" >nul 2>&1
-if %ERRORLEVEL% equ 0 (
-    echo    ✅ PyTorch CUDA instalado y funcional
-    set /a SUCCESS_COUNT+=1
+echo [5/8] 🔥 Instalando PyTorch optimizado para Python %PYTHON_VERSION%...
+
+:: Limpiar instalaciones previas de PyTorch
+echo 🧹 Limpiando instalaciones previas de PyTorch...
+python -m pip uninstall -y torch torchvision torchaudio --quiet 2>nul
+
+:: Verificar si tenemos Python 3.11 para CUDA óptimo
+if "%PYTHON_MINOR%"=="11" (
+    echo 🚀 Python 3.11 detectado - Instalando PyTorch CUDA optimizado...
+    echo    📥 Descargando PyTorch CUDA 12.1 para Python 3.11...
+    python -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+    
+    :: Verificar instalación CUDA
+    python -c "import torch; print('✅ PyTorch CUDA:', torch.version.cuda if torch.cuda.is_available() else 'No disponible')" 2>nul
+    if %ERRORLEVEL% equ 0 (
+        python -c "import torch; exit(0 if torch.cuda.is_available() else 1)" 2>nul
+        if %ERRORLEVEL% equ 0 (
+            echo    ✅ PyTorch CUDA instalado y GPU detectada
+            set /a SUCCESS_COUNT+=1
+        ) else (
+            echo    ⚠️ PyTorch CUDA instalado pero GPU no detectada
+            echo       💡 Verifica drivers NVIDIA y CUDA Toolkit 12.1
+            set /a SUCCESS_COUNT+=1
+        )
+    ) else (
+        goto :fallback_cpu_pytorch
+    )
 ) else (
-    echo    ⚠️ PyTorch CUDA falló, probando versión CPU...
-    python -m pip install torch torchvision torchaudio --quiet
+    echo 🔄 Python %PYTHON_VERSION% - Probando PyTorch CUDA...
+    python -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
     python -c "import torch; print('PYTORCH_OK')" >nul 2>&1
     if %ERRORLEVEL% equ 0 (
-        echo    ✅ PyTorch CPU instalado y funcional
-        set /a SUCCESS_COUNT+=1
+        python -c "import torch; exit(0 if torch.cuda.is_available() else 1)" 2>nul
+        if %ERRORLEVEL% equ 0 (
+            echo    ✅ PyTorch CUDA funcionando con Python %PYTHON_VERSION%
+            set /a SUCCESS_COUNT+=1
+        ) else (
+            echo    ⚠️ PyTorch instalado sin CUDA para Python %PYTHON_VERSION%
+            set /a SUCCESS_COUNT+=1
+        )
     ) else (
-        echo    ❌ PyTorch no se pudo instalar
-        set /a FAIL_COUNT+=1
+        goto :fallback_cpu_pytorch
     )
 )
+goto :pytorch_done
+
+:fallback_cpu_pytorch
+echo    ⚠️ PyTorch CUDA falló, instalando versión CPU...
+python -m pip install torch torchvision torchaudio
+python -c "import torch; print('PYTORCH_OK')" >nul 2>&1
+if %ERRORLEVEL% equ 0 (
+    echo    ✅ PyTorch CPU instalado y funcional
+    set /a SUCCESS_COUNT+=1
+) else (
+    echo    ❌ PyTorch no se pudo instalar
+    set /a FAIL_COUNT+=1
+)
+
+:pytorch_done
 
 :: Verificar herramientas de compilación
 echo.
@@ -272,9 +345,23 @@ echo    python gradio_tts_app.py
 echo    python gradio_vc_app.py
 echo.
 echo 🔧 Si hay problemas, revisa:
+echo    - Python 3.11 instalado para máxima compatibilidad?
 echo    - Visual Studio Build Tools instalados?
-echo    - Python 3.13 compatible con todas las librerías?
+echo    - NVIDIA GPU con drivers actualizados?
+echo    - CUDA Toolkit 12.1 instalado?
 echo    - Conexión a internet estable?
+echo.
+echo 💡 RECOMENDACIONES PARA MÁXIMO RENDIMIENTO:
+echo    🐍 Python 3.11: https://www.python.org/downloads/release/python-3118/
+echo    🔧 Visual Studio Build Tools: https://visualstudio.microsoft.com/visual-cpp-build-tools/
+echo    🎮 CUDA Toolkit 12.1: https://developer.nvidia.com/cuda-12-1-0-download-archive
+echo    📱 Drivers NVIDIA: https://www.nvidia.com/drivers/
+echo.
+if "%PYTHON_MINOR%"=="11" (
+    echo ✅ CONFIGURACIÓN ÓPTIMA: Python 3.11 detectado
+) else (
+    echo ⚠️ MEJORA RECOMENDADA: Considera actualizar a Python 3.11
+)
 echo.
 pause
 exit /b 0
