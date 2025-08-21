@@ -1,7 +1,9 @@
 # 🎙️ VoiceClone AI Spanish
 
 [![Python](https://img.shields.io/badge/Python-3.9%2B-blue.svg)](https://www.python.org/downloads/)
-[![F```
+[![PyTorc## 📁 Estructura del Proyecto
+
+```
 VoiceClone-AI-Spanish/
 ├── 🚀 app.py                    # Aplicación principal
 ├── 📋 requirements.txt          # Dependencias completas
@@ -12,19 +14,31 @@ VoiceClone-AI-Spanish/
 ├── ⚡ run_app.bat               # Ejecutor rápido Windows
 ├── 🔍 check_system.bat         # Diagnóstico del sistema
 ├── 🔧 src/
+│   ├── __init__.py
 │   └── voice_generator.py       # Motor de clonación
+├── 📁 audios/                   # Directorio para audios de entrada
 ├── 📁 examples/                 # Audios de ejemplo
+├── 📁 outputs/                  # Audios generados
+├── 📁 profiles/                 # Perfiles de voz guardados
 ├── 🎨 assets/                   # Recursos (imágenes, demos)
 ├── 📄 LICENSE                   # Licencia MIT
-└── 🤖 .ia-meta                  # Metadatos para IA
-```//img.shields.io/badge/FastAPI-Compatible-green.svg)](https://fastapi.tiangolo.com/)
+├── 🤖 .ia-meta                  # Metadatos para IA
+└── 🔒 .gitignore               # Archivos ignorados
+```hields.io/badge/PyTorch-2.0%2B-red.svg)](https://pytorch.org/)
 [![Gradio](https://img.shields.io/badge/Gradio-4.0%2B-orange.svg)](https://gradio.app/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![AI-Friendly](https://img.shields.io/badge/AI-Friendly-purple.svg)](https://github.com/topics/artificial-intelligence)
+[![Spanish-F5](https://img.shields.io/badge/Spanish--F5-TTS-green.svg)](https://github.com/jpgallegoar/Spanish-F5)
+[![AI-Generated](https://img.shields.io/badge/AI--Generated-Code-purple.svg)](https://github.com/topics/artificial-intelligence)
+[![Vibe Code](https://img.shields.io/badge/Vibe--Code-AI--Assisted-ff69b4.svg)](https://github.com/topics/ai-development)
 
-**🇪🇸 Sistema avanzado de clonación de voz en español usando F5-TTS**
+**🇪🇸 Sistema avanzado de clonación de voz en español usando Spanish-F5**
 
 Crea voces artificiales realistas en español con solo unos archivos de audio de referencia. Perfecto para locución, asistentes virtuales, contenido multimedia y proyectos creativos.
+
+> **🤖 Vibe Code - AI Generated Project**  
+> Este proyecto ha sido desarrollado completamente por **Inteligencia Artificial** (Claude Sonnet 3.5 + GPT-4).  
+> **⚠️ El código NO ha sido revisado por programadores humanos** - Es un experimento de desarrollo IA puro.  
+> Usar bajo tu propio riesgo y reportar bugs en [Issues](https://github.com/IA-ismo-Lab/VoiceClone-AI-Spanish/issues).
 
 ## 🎯 Características Principales
 
@@ -320,15 +334,28 @@ Verifica que estés usando el modelo correcto:
 
 ## 🤖 Créditos de Desarrollo
 
-### Desarrollado por:
-- **Claude Sonnet 3.5** - Asistente de IA para desarrollo
-- **GPT-4** - Asistente de IA para desarrollo  
-- **⚠️ IA-ismo Labs** - Alicia Colmenero Fernández
+### 🎯 Desarrollo 100% IA - Vibe Code:
+- **Claude Sonnet 3.5** - Asistente de IA principal para desarrollo y arquitectura
+- **GPT-4** - Asistente de IA secundario para validación y optimización
+- **⚠️ IA-ismo Labs** - Alicia Colmenero Fernández (Supervisión y testing)
+
+### 🚨 Advertencia Importante:
+- **🤖 Código NO revisado** por programadores humanos profesionales
+- **⚡ Desarrollo experimental** - Primera generación de código 100% IA
+- **🧪 Testing requerido** - Reportar bugs y mejoras en Issues
+- **📚 Documentación IA** - Generada automáticamente por modelos de lenguaje
+
+### 🛠️ Tecnologías de Desarrollo IA:
+- **Prompt Engineering** avanzado para arquitectura de software
+- **Chain-of-Thought** programming para lógica compleja
+- **Multi-Agent Collaboration** entre Claude y GPT-4
+- **Automated Documentation** generación y mantenimiento
 
 ### Metadatos Programables:
 - **🤖 IA-Friendly**: Preparado para automatización por otros agentes
 - **📡 API-Ready**: Endpoints documentados para integración directa
 - **🔄 Agent-Compatible**: Metadatos en `.ia-meta` para detección automática
+- **🎨 Vibe-Code**: Marcado como desarrollo IA experimental
 
 ### Síguenos:
 - **📰 Newsletter**: [IA-ismo](https://ia-ismo.com)
