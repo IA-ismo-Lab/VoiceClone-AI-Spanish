@@ -2,6 +2,10 @@
 chcp 65001 > nul
 setlocal enabledelayedexpansion
 
+:: Contadores de estado
+set "SUCCESS_COUNT=0"
+set "FAIL_COUNT=0"
+
 :: Configurar directorio de trabajo
 set "SCRIPT_DIR=%~dp0"
 cd /d "%SCRIPT_DIR%"
@@ -99,72 +103,40 @@ if not exist "venv" (
     echo ✅ Entorno virtual ya existe
 )
 
-:: Intentar instalar Spanish-F5
+:: Activar el entorno virtual
 echo.
-echo [7/8] 🇪🇸 Instalando Spanish-F5...
-if "!BUILD_TOOLS_OK!"=="0" (
-    echo.
-    echo ⚠️ HERRAMIENTAS DE COMPILACIÓN FALTANTES
-    echo ==========================================
-    echo Spanish-F5 requiere ninja + meson + MSVC pero faltan herramientas.
-    echo.
-    echo �️ Para completar la instalación:
-    echo    1. Instala Visual Studio Build Tools
-    echo       https://visualstudio.microsoft.com/visual-cpp-build-tools/
-    echo    2. Selecciona "C++ build tools" durante instalación
-    echo    3. Reinicia el sistema
-    echo    4. Ejecuta este script nuevamente
-    echo.
-    echo 💡 Mientras tanto, puedes usar otras funciones TTS
-    echo    ❌ Spanish-F5: SALTADO (faltan herramientas)
-    set /a FAIL_COUNT+=1
+echo 🚀 Activando entorno virtual...
+call "venv\Scripts\activate.bat" >nul 2>&1
+if errorlevel 1 (
+    echo ⚠️ No se pudo activar el entorno virtual. Continuando con Python actual...
 ) else (
-    echo 🔧 Herramientas de compilación detectadas, instalando Spanish-F5...
-
-    :: Limpiar instalación previa
-    if exist "temp_spanish_f5" (
-        echo 🧹 Limpiando instalación previa...
-        rmdir /s /q "temp_spanish_f5" 2>nul
-    )
-
-    :: Clonar repositorio
-    echo 📥 Clonando Spanish-F5 desde GitHub...
-    git clone https://github.com/jpgallegoar/Spanish-F5.git temp_spanish_f5
-    if errorlevel 1 (
-        echo ❌ Error clonando Spanish-F5
-        set /a FAIL_COUNT+=1
-    ) else (
-        :: Instalar Spanish-F5
-        echo 🏗️ Compilando e instalando Spanish-F5...
-    pushd temp_spanish_f5
-    python -m pip install .
-    set "_SPANISH_F5_INSTALL_ERROR=%ERRORLEVEL%"
-    popd
-
-        :: Verificar que funciona
-        if not "%_SPANISH_F5_INSTALL_ERROR%"=="0" (
-            echo ❌ Spanish-F5 no se pudo instalar (posible falta de espacio)
-            set /a FAIL_COUNT+=1
-        ) else (
-            python -c "from spanish_f5 import load_model; print('SPANISH_F5_OK')" >nul 2>&1
-            if %ERRORLEVEL% equ 0 (
-                echo ✅ Spanish-F5 instalado y funcional
-                set /a SUCCESS_COUNT+=1
-            ) else (
-                echo ❌ Spanish-F5 instalado pero no funciona
-                set /a FAIL_COUNT+=1
-            )
-        )
-    )
-
-    :: Limpiar archivos temporales siempre que existan
-    if exist "temp_spanish_f5" (
-        echo 🧹 Limpiando archivos temporales Spanish-F5...
-        rmdir /s /q "temp_spanish_f5" 2>nul
-    )
+    echo ✅ Entorno virtual activado
 )
+
+:: Dependencias base
+echo.
+echo [3/8] � Instalando dependencias base...
+python -m pip install --upgrade pip setuptools wheel
+python -m pip install "gradio>=4.0.0" "transformers>=4.30.0" "huggingface-hub>=0.15.0"
+python -c "import gradio, transformers, huggingface_hub; print('BASE_OK')" >nul 2>&1
+if %ERRORLEVEL% equ 0 (
+    echo ✅ Dependencias base instaladas
+    set /a SUCCESS_COUNT+=1
 ) else (
-    echo    ❌ Error con audio básico
+    echo ❌ Error instalando dependencias base
+    set /a FAIL_COUNT+=1
+)
+
+:: Librerías básicas de audio/ciencia
+echo.
+echo [4/8] �️ Instalando librerías básicas de audio/ciencia...
+python -m pip install numpy pandas pyyaml tqdm soundfile pydub --quiet
+python -c "import numpy, pandas, yaml, tqdm, soundfile, pydub; print('CORE_OK')" >nul 2>&1
+if %ERRORLEVEL% equ 0 (
+    echo ✅ Librerías básicas instaladas
+    set /a SUCCESS_COUNT+=1
+) else (
+    echo ⚠️ Algunas librerías básicas fallaron
     set /a FAIL_COUNT+=1
 )
 
@@ -317,30 +289,35 @@ if "!BUILD_TOOLS_OK!"=="0" (
     :: Clonar repositorio
     echo 📥 Clonando Spanish-F5 desde GitHub...
     git clone https://github.com/jpgallegoar/Spanish-F5.git temp_spanish_f5
-    if %ERRORLEVEL% neq 0 (
+    set "_SPANISH_F5_CLONE_ERROR=%ERRORLEVEL%"
+    if not "%_SPANISH_F5_CLONE_ERROR%"=="0" (
         echo ❌ Error clonando Spanish-F5
         set /a FAIL_COUNT+=1
-        goto :skip_spanish_f5
-    )
-    
-    :: Instalar Spanish-F5
-    echo 🏗️ Compilando e instalando Spanish-F5...
-    pushd temp_spanish_f5
-    python -m pip install . --quiet
-    popd
-    
-    :: Verificar que funciona
-    python -c "from spanish_f5 import load_model; print('SPANISH_F5_OK')" >nul 2>&1
-    if %ERRORLEVEL% equ 0 (
-        echo ✅ Spanish-F5 instalado y funcional
-        set /a SUCCESS_COUNT+=1
     ) else (
-        echo ❌ Spanish-F5 instalado pero no funciona
-        set /a FAIL_COUNT+=1
+        :: Instalar Spanish-F5
+        echo 🏗️ Compilando e instalando Spanish-F5...
+        pushd temp_spanish_f5
+        python -m pip install . --quiet
+        set "_SPANISH_F5_INSTALL_ERROR=%ERRORLEVEL%"
+        popd
+        
+        :: Verificar que funciona
+        if not "%_SPANISH_F5_INSTALL_ERROR%"=="0" (
+            echo ❌ Spanish-F5 no se pudo instalar
+            set /a FAIL_COUNT+=1
+        ) else (
+            python -c "from spanish_f5 import load_model; print('SPANISH_F5_OK')" >nul 2>&1
+            if %ERRORLEVEL% equ 0 (
+                echo ✅ Spanish-F5 instalado y funcional
+                set /a SUCCESS_COUNT+=1
+            ) else (
+                echo ❌ Spanish-F5 instalado pero no funciona
+                set /a FAIL_COUNT+=1
+            )
+        )
     )
     
     :: Limpiar archivos temporales
-    :skip_spanish_f5
     if exist "temp_spanish_f5" (
         echo 🧹 Limpiando archivos temporales Spanish-F5...
         rmdir /s /q "temp_spanish_f5" 2>nul
