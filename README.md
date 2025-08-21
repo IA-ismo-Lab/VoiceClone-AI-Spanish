@@ -77,50 +77,49 @@ Crea voces artificiales realistas en español con solo unos archivos de audio de
 
 ## 📦 Instalación
 
-### 🎯 Instalación Óptima (Python 3.11)
+### 🎯 Instalación Única y Robusta
 
-**Para máxima compatibilidad y rendimiento GPU:**
+**Un solo instalador optimizado para Python 3.11.8:**
 
 ```bash
-# 1. Instalar Python 3.11 desde python.org
+# 1. Instalar Python 3.11.8 desde python.org (CRÍTICO)
 # 2. Clonar el repositorio
 git clone https://github.com/IA-ismo-Lab/VoiceClone-AI-Spanish.git
 cd VoiceClone-AI-Spanish
 
-# 3. Instalación específica Python 3.11
-install_python311_only.bat
+# 3. Instalación completa
+install_robust.bat
+
+# 4. Verificar funcionamiento
+check.bat
 ```
 
-### 🚀 Instalación Robusta (Cualquier Python)
+### 🔧 Componentes Críticos Instalados
 
-**Para Python 3.10-3.12 con detección inteligente:**
+| Componente | Función | Estado |
+|------------|---------|--------|
+| **F5-TTS** | Motor principal de síntesis | **CRÍTICO** |
+| **PyTorch** | Aceleración GPU/CPU | **ESENCIAL** |
+| **Gradio** | Interfaz web | **ESENCIAL** |
+| Spanish-F5 | Optimización español | Opcional |
+| Librosa | Audio avanzado | Opcional |
+
+### ⚡ Requisitos Estrictos
+
+- **Python 3.11.8** específicamente (por compatibilidad F5-TTS)
+- **Git** para clonación de repositorios  
+- **Visual Studio Build Tools** (Windows)
+- **CUDA 12.1 + drivers NVIDIA** (para GPU)
+
+### 🧪 Verificación Post-Instalación
 
 ```bash
-# 1. Clonar el repositorio
-git clone https://github.com/IA-ismo-Lab/VoiceClone-AI-Spanish.git
-cd VoiceClone-AI-Spanish
+# Verificar que todo funciona
+check.bat
 
-# 2. Instalador inteligente
+# Si F5-TTS falla, reinstalar
 install_robust.bat
 ```
-
-### 🛡️ Instalación Básica (Sin GPU)
-
-**Solo dependencias básicas, sin compilación:**
-
-```bash
-# Para sistemas sin herramientas de compilación
-install_basic_only.bat
-```
-
-### 📋 Scripts Disponibles
-
-| Script | Descripción | Recomendado para |
-|--------|-------------|------------------|
-| `install_python311_only.bat` | Requiere Python 3.11 específicamente | **Usuarios con GPU NVIDIA** |
-| `install_robust.bat` | Instalación inteligente multi-versión | **Uso general** |
-| `install_basic_only.bat` | Solo dependencias básicas | **Sistemas limitados** |
-| `diagnostico.bat` | Verificar estado del sistema | **Troubleshooting** |
 
 ### 📋 Instalación Manual
 

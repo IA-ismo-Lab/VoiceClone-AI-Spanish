@@ -13,15 +13,15 @@ echo ============================================================
 echo 📁 Directorio de trabajo: %CD%
 echo.
 
-:: Verificar si Python está instalado y es versión 3.11
-echo [1/8] 🐍 Verificando Python 3.11...
+:: Verificar si Python está instalado y es versión 3.11.8 específica
+echo [1/8] 🐍 Verificando Python 3.11.8...
 python --version >nul 2>&1
 if %ERRORLEVEL% neq 0 (
     echo ❌ Error: Python no está instalado o no está en PATH
     echo.
-    echo 💡 Descargar Python 3.11 desde: https://www.python.org/downloads/release/python-3118/
+    echo 💡 Descargar Python 3.11.8 desde: https://www.python.org/downloads/release/python-3118/
     echo    ✅ Asegúrate de marcar "Add Python to PATH"
-    echo    🔥 IMPORTANTE: Usar Python 3.11 para compatibilidad con PyTorch CUDA
+    echo    🔥 CRÍTICO: Usar Python 3.11.8 para compatibilidad F5-TTS + PyTorch CUDA
     pause
     exit /b 1
 )
@@ -30,36 +30,48 @@ if %ERRORLEVEL% neq 0 (
 for /f "tokens=2" %%v in ('python --version 2^>^&1') do set "PYTHON_VERSION=%%v"
 echo 🔍 Python %PYTHON_VERSION% detectado
 
-:: Extraer versión mayor y menor
+:: Extraer versión completa (mayor.menor.patch)
 for /f "tokens=1 delims=." %%a in ("%PYTHON_VERSION%") do set "PYTHON_MAJOR=%%a"
 for /f "tokens=2 delims=." %%b in ("%PYTHON_VERSION%") do set "PYTHON_MINOR=%%b"
+for /f "tokens=3 delims=." %%c in ("%PYTHON_VERSION%") do set "PYTHON_PATCH=%%c"
 
 if not "%PYTHON_MAJOR%"=="3" (
     echo ❌ Error: Se requiere Python 3.x
-    echo 💡 Instala Python 3.11 para máxima compatibilidad con PyTorch CUDA
+    echo 💡 Instala Python 3.11.8 para máxima compatibilidad
     pause
     exit /b 1
 )
 
 if not "%PYTHON_MINOR%"=="11" (
-    echo ⚠️ ADVERTENCIA: Python 3.11 recomendado para PyTorch CUDA
+    echo ❌ ERROR: Python 3.11 requerido para F5-TTS
     echo    Versión actual: %PYTHON_VERSION%
-    echo    Versión recomendada: 3.11.x
+    echo    Versión requerida: 3.11.8
     echo.
-    echo 🔥 Para máxima compatibilidad con GPU/CUDA:
-    echo    1. Instala Python 3.11 desde python.org
-    echo    2. Asegúrate de que python.exe apunte a Python 3.11
+    echo 🔥 F5-TTS requiere Python 3.11 específicamente
+    echo    PyTorch CUDA también funciona mejor con 3.11
+    echo.
+    echo 📥 DESCARGAR Python 3.11.8:
+    echo    https://www.python.org/downloads/release/python-3118/
+    echo.
+    pause
+    exit /b 1
+)
+
+if not "%PYTHON_PATCH%"=="8" (
+    echo ⚠️ ADVERTENCIA: Python 3.11.8 recomendado
+    echo    Versión actual: %PYTHON_VERSION%
+    echo    Versión recomendada: 3.11.8
     echo.
     echo ❓ ¿Continuar con Python %PYTHON_VERSION%? (S/N)
     set /p "CONTINUE_ANYWAY="
     if /i not "%CONTINUE_ANYWAY%"=="S" (
-        echo 🔄 Instalación cancelada. Instala Python 3.11 y reintenta.
+        echo 🔄 Instalación cancelada. Instala Python 3.11.8 y reintenta.
         pause
         exit /b 1
     )
-    echo ✅ Continuando con Python %PYTHON_VERSION% (puede haber limitaciones)
+    echo ✅ Continuando con Python %PYTHON_VERSION%
 ) else (
-    echo ✅ Python 3.11 detectado - PERFECTO para PyTorch CUDA
+    echo ✅ Python 3.11.8 detectado - PERFECTO para F5-TTS + PyTorch CUDA
 )
 
 :: Crear entorno virtual si no existe
@@ -287,10 +299,70 @@ if %BUILD_TOOLS_OK% equ 0 (
     :: Limpiar archivos temporales
     :skip_spanish_f5
     if exist "temp_spanish_f5" (
-        echo 🧹 Limpiando archivos temporales...
+        echo 🧹 Limpiando archivos temporales Spanish-F5...
         rmdir /s /q "temp_spanish_f5" 2>nul
     )
 )
+
+:: Instalar F5-TTS (CRÍTICO para funcionamiento)
+echo.
+echo [7.5/8] 🎯 Instalando F5-TTS (Motor principal)...
+echo 🔥 F5-TTS es CRÍTICO para el funcionamiento del sistema
+
+:: Intentar instalación directa con pip
+echo 📦 Método 1: Instalación directa con pip...
+python -m pip install f5-tts
+python -c "import f5_tts; print('F5_TTS_OK')" >nul 2>&1
+if %ERRORLEVEL% equ 0 (
+    echo ✅ F5-TTS instalado exitosamente con pip
+    set /a SUCCESS_COUNT+=1
+    goto :f5_tts_done
+)
+
+echo ⚠️ Pip install falló, probando instalación desde código fuente...
+
+:: Limpiar instalación previa si existe
+if exist "temp_f5_tts" (
+    echo 🧹 Limpiando instalación previa de F5-TTS...
+    rmdir /s /q "temp_f5_tts" 2>nul
+)
+
+:: Clonar repositorio F5-TTS
+echo 📥 Clonando F5-TTS desde GitHub...
+git clone https://github.com/SWivid/F5-TTS.git temp_f5_tts
+if %ERRORLEVEL% neq 0 (
+    echo ❌ Error clonando F5-TTS
+    echo 🚨 F5-TTS es CRÍTICO - sin él el sistema no funcionará
+    set /a FAIL_COUNT+=1
+    goto :f5_tts_failed
+)
+
+:: Instalar desde código fuente
+echo 🏗️ Instalando F5-TTS desde código fuente...
+pushd temp_f5_tts
+echo    📋 Instalando en modo desarrollo...
+python -m pip install -e .
+popd
+
+:: Verificar instalación
+python -c "import f5_tts; print('F5_TTS_OK')" >nul 2>&1
+if %ERRORLEVEL% equ 0 (
+    echo ✅ F5-TTS instalado exitosamente desde código fuente
+    set /a SUCCESS_COUNT+=1
+) else (
+    echo ❌ F5-TTS falló en ambos métodos
+    echo 🚨 CRÍTICO: Sin F5-TTS el sistema NO funcionará
+    set /a FAIL_COUNT+=1
+)
+
+:: Limpiar archivos temporales F5-TTS
+:f5_tts_failed
+if exist "temp_f5_tts" (
+    echo 🧹 Limpiando archivos temporales F5-TTS...
+    rmdir /s /q "temp_f5_tts" 2>nul
+)
+
+:f5_tts_done
 
 :: Instalar dependencias avanzadas de audio
 echo.
@@ -338,14 +410,28 @@ if %FAIL_COUNT% equ 0 (
 
 echo.
 echo 🧪 Para verificar qué funciona:
-echo    .\diagnostico.bat
+echo    python -c "import f5_tts; print('✅ F5-TTS funcionando')"
+echo    python -c "import torch; print('✅ PyTorch funcionando')"
+echo    python -c "import gradio; print('✅ Gradio funcionando')"
 echo.
 echo 🚀 Para usar las aplicaciones:
 echo    python gradio_tts_app.py
 echo    python gradio_vc_app.py
 echo.
 echo 🔧 Si hay problemas, revisa:
-echo    - Python 3.11 instalado para máxima compatibilidad?
+echo    - Python 3.11.8 instalado para máxima compatibilidad?
+echo    - F5-TTS instalado correctamente? (CRÍTICO)
+echo    - Visual Studio Build Tools instalados?
+echo    - NVIDIA GPU con drivers actualizados?
+echo    - CUDA Toolkit 12.1 instalado?
+echo    - Conexión a internet estable?
+echo.
+echo 💡 COMPONENTES CRÍTICOS PARA FUNCIONAMIENTO:
+echo    🎯 F5-TTS: Motor principal de text-to-speech
+echo    🔥 PyTorch: Aceleración GPU/CPU
+echo    🖥️ Gradio: Interfaz web
+echo.
+echo 🚨 SIN F5-TTS EL SISTEMA NO FUNCIONARÁ
 echo    - Visual Studio Build Tools instalados?
 echo    - NVIDIA GPU con drivers actualizados?
 echo    - CUDA Toolkit 12.1 instalado?
