@@ -227,7 +227,7 @@ if not errorlevel 1 (
 
 where cl >nul 2>&1
 if errorlevel 1 (
-    echo ⚠️ MSVC (Visual Studio Build Tools) no encontrado
+    echo ⚠️ MSVC - Visual Studio Build Tools - no encontrado
     set "BUILD_TOOLS_OK=0"
 )
 if not errorlevel 1 (
@@ -238,7 +238,7 @@ if not errorlevel 1 (
 if "!BUILD_TOOLS_OK!"=="0" (
     echo.
     echo 🔄 Intentando instalar herramientas de compilación mínimas en el entorno virtual...
-    echo    (ninja, meson, cmake, meson-python)
+    echo    [ninja, meson, cmake, meson-python]
     python -m pip install --upgrade pip setuptools wheel
     python -m pip install ninja meson cmake meson-python
 
